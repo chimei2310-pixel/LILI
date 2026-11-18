@@ -1628,44 +1628,44 @@
 
         window.onload = initApp;
     <script>
-  // 1. https://script.google.com/macros/s/AKfycbyGHt-tewtYQjtIeRB-sZFYnlwIjAvx8-V1RSNLHVkjQjOIGtIzpk9EU7ZFuv8sg_xVYQ/exec
-  const GAS_URL = "https://script.google.com/macros/s/您的專案代碼/exec";
+ // 1. 您的 Google Apps Script 網址
+      const GAS_URL = "https://script.google.com/macros/s/AKfycbyGHt-tewtYQjtIeRB-sZFYnlwIjAvx8-V1RSNLHVkjQjOIGtIzpk9EU7ZFuv8sg_xVYQ/exec";
 
-  // 2. 這是負責從雲端讀取資料的函式
-  async function loadFromGoogleSheets(sheetName) {
-    try {
-      let response = await fetch(`${GAS_URL}?sheet=${sheetName}`);
-      let result = await response.json();
-      if (result.status === "success") {
-        console.log("成功從 Google 試算表載入資料：", result.data);
-        return result.data; // 回傳二維陣列資料
+      // 2. 負責從雲端讀取的函式
+      async function loadFromGoogleSheets(sheetName) {
+        try {
+          let response = await fetch(`${GAS_URL}?sheet=${sheetName}`);
+          let result = await response.json();
+          if (result.status === "success") {
+            console.log("成功從 Google 試算表載入資料：", result.data);
+            return result.data;
+          }
+        } catch (err) {
+          console.error("載入失敗", err);
+        }
       }
-    } catch (err) {
-      console.error("載入失敗", err);
-    }
-  }
 
-  // 3. 這是負責將網頁異動寫回雲端的函式
-  async function saveToGoogleSheets(sheetName, tableDataArray) {
-    try {
-      let response = await fetch(GAS_URL, {
-        method: "POST",
-        body: JSON.stringify({
-          sheet: sheetName,       // 例如 "Settings" 或 "Schedule"
-          action: "overwrite",    // 覆蓋更新整張表
-          rows: tableDataArray    // 要存入的表格資料
-        })
-      });
-      let result = await response.json();
-      if (result.status === "success") {
-        alert("已成功同步更新至雲端！");
+      // 3. 負責將資料寫回雲端的函式
+      async function saveToGoogleSheets(sheetName, tableDataArray) {
+        try {
+          let response = await fetch(GAS_URL, {
+            method: "POST",
+            body: JSON.stringify({
+              sheet: sheetName,
+              action: "overwrite",
+              rows: tableDataArray
+            })
+          });
+          let result = await response.json();
+          if (result.status === "success") {
+            alert("已成功同步更新至雲端！");
+          }
+        } catch (err) {
+          console.error("同步失敗", err);
+        }
       }
-    } catch (err) {
-      console.error("同步失敗", err);
-    }
-  }
 
-  // 原本您網頁其他的 JavaScript 程式碼...
+      // 您原本網頁其他的互動程式碼...
 </script>
 </body>
 </html>
